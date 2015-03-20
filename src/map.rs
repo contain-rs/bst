@@ -748,9 +748,17 @@ pub struct Iter<'a, K:'a, V:'a> {
     remaining_max: usize
 }
 
+impl<'a, K, V> Clone for Iter<'a, K, V> {
+    fn clone(&self) -> Iter<'a, K, V> { Iter { stack: self.stack.clone(), ..*self } }
+}
+
 /// Lazy backward iterator over a map
 pub struct RevIter<'a, K:'a, V:'a> {
     iter: Iter<'a, K, V>,
+}
+
+impl<'a, K, V> Clone for RevIter<'a, K, V> {
+    fn clone(&self) -> RevIter<'a, K, V> { RevIter { iter: self.iter.clone() } }
 }
 
 /// Lazy forward iterator over a map that allows for the mutation of
@@ -790,10 +798,17 @@ pub struct RevIterMut<'a, K:'a, V:'a> {
 pub struct Keys<'a, K: 'a, V: 'a>
     (iter::Map<Iter<'a, K, V>, fn((&'a K, &'a V)) -> &'a K>);
 
+impl<'a, K, V> Clone for Keys<'a, K, V> {
+    fn clone(&self) -> Keys<'a, K, V> { Keys(self.0.clone()) }
+}
+
 /// Map values iterator.
 pub struct Values<'a, K: 'a, V: 'a>
     (iter::Map<Iter<'a, K, V>, fn((&'a K, &'a V)) -> &'a V>);
 
+impl<'a, K, V> Clone for Values<'a, K, V> {
+    fn clone(&self) -> Values<'a, K, V> { Values(self.0.clone()) }
+}
 
 // FIXME #5846 we want to be able to choose between &x and &mut x
 // (with many different `x`) below, so we need to optionally pass mut
@@ -956,6 +971,7 @@ fn deref_mut<K, V>(x: &mut Option<Box<TreeNode<K, V>>>)
 }
 
 /// Lazy forward iterator over a map that consumes the map while iterating
+#[derive(Clone)]
 pub struct IntoIter<K, V> {
     stack: Vec<TreeNode<K, V>>,
     remaining: usize

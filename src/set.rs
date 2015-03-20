@@ -520,12 +520,21 @@ pub struct Iter<'a, T:'a> {
     iter: map::Iter<'a, T, ()>
 }
 
+impl<'a, T> Clone for Iter<'a, T> {
+    fn clone(&self) -> Iter<'a, T> { Iter { iter: self.iter.clone() } }
+}
+
 /// A lazy backward iterator over a set.
 pub struct RevIter<'a, T:'a> {
     iter: map::RevIter<'a, T, ()>
 }
 
+impl<'a, T> Clone for RevIter<'a, T> {
+    fn clone(&self) -> RevIter<'a, T> { RevIter { iter: self.iter.clone() } }
+}
+
 /// A lazy forward iterator over a set that consumes the set while iterating.
+#[derive(Clone)]
 pub struct IntoIter<T>(iter::Map<map::IntoIter<T, ()>, fn((T, ())) -> T>);
 
 /// A lazy iterator producing elements in the set difference (in-order).
@@ -535,11 +544,23 @@ pub struct Difference<'a, T:'a, C:'a> {
     cmp: &'a C,
 }
 
+impl<'a, T, C> Clone for Difference<'a, T, C> {
+    fn clone(&self) -> Difference<'a, T, C> {
+        Difference { a: self.a.clone(), b: self.b.clone(), cmp: self.cmp }
+    }
+}
+
 /// A lazy iterator producing elements in the set symmetric difference (in-order).
 pub struct SymmetricDifference<'a, T:'a, C:'a> {
     a: Peekable<Iter<'a, T>>,
     b: Peekable<Iter<'a, T>>,
     cmp: &'a C,
+}
+
+impl<'a, T, C> Clone for SymmetricDifference<'a, T, C> {
+    fn clone(&self) -> SymmetricDifference<'a, T, C> {
+        SymmetricDifference { a: self.a.clone(), b: self.b.clone(), cmp: self.cmp }
+    }
 }
 
 /// A lazy iterator producing elements in the set intersection (in-order).
@@ -549,11 +570,23 @@ pub struct Intersection<'a, T:'a, C:'a> {
     cmp: &'a C,
 }
 
+impl<'a, T, C> Clone for Intersection<'a, T, C> {
+    fn clone(&self) -> Intersection<'a, T, C> {
+        Intersection { a: self.a.clone(), b: self.b.clone(), cmp: self.cmp }
+    }
+}
+
 /// A lazy iterator producing elements in the set union (in-order).
 pub struct Union<'a, T:'a, C:'a> {
     a: Peekable<Iter<'a, T>>,
     b: Peekable<Iter<'a, T>>,
     cmp: &'a C,
+}
+
+impl<'a, T, C> Clone for Union<'a, T, C> {
+    fn clone(&self) -> Union<'a, T, C> {
+        Union { a: self.a.clone(), b: self.b.clone(), cmp: self.cmp }
+    }
 }
 
 /// Compare `x` and `y`, but return `short` if x is None and `long` if y is None
