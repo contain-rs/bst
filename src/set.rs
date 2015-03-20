@@ -126,7 +126,6 @@ impl<T: Ord> Set<T> {
     /// let mut set: bst::Set<i32> = bst::Set::new();
     /// ```
     #[inline]
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn new() -> Set<T> { Set::with_comparator(natural()) }
 }
 
@@ -152,7 +151,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// }
     /// ```
     #[inline]
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn iter(&self) -> Iter<T> {
         Iter { iter: self.map.iter() }
     }
@@ -187,7 +185,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// assert_eq!(v, [1, 2, 3, 4, 5]);
     /// ```
     #[inline]
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn into_iter(self) -> IntoIter<T> {
         fn first<A, B>((a, _): (A, B)) -> A { a }
         let first: fn((T, ())) -> T = first; // coerce to fn pointer
@@ -251,7 +248,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// let diff: bst::Set<i32> = b.difference(&a).cloned().collect();
     /// assert_eq!(diff, [4, 5].iter().cloned().collect());
     /// ```
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn difference<'a>(&'a self, other: &'a Set<T, C>)
         -> Difference<'a, T, C> where C: Eq {
         assert!(self.comparator() == other.comparator());
@@ -281,7 +277,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// assert_eq!(diff1, diff2);
     /// assert_eq!(diff1, [1, 2, 4, 5].iter().cloned().collect());
     /// ```
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn symmetric_difference<'a>(&'a self, other: &'a Set<T, C>)
         -> SymmetricDifference<'a, T, C> where C: Eq {
         assert!(self.comparator() == other.comparator());
@@ -308,7 +303,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// let diff: bst::Set<i32> = a.intersection(&b).cloned().collect();
     /// assert_eq!(diff, [2, 3].iter().cloned().collect());
     /// ```
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn intersection<'a>(&'a self, other: &'a Set<T, C>)
         -> Intersection<'a, T, C> where C: Eq {
         assert!(self.comparator() == other.comparator());
@@ -335,7 +329,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// let diff: bst::Set<i32> = a.union(&b).cloned().collect();
     /// assert_eq!(diff, [1, 2, 3, 4, 5].iter().cloned().collect());
     /// ```
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn union<'a>(&'a self, other: &'a Set<T, C>) -> Union<'a, T, C>
         where C: Eq {
         assert!(self.comparator() == other.comparator());
@@ -357,7 +350,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// assert_eq!(v.len(), 1);
     /// ```
     #[inline]
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn len(&self) -> usize { self.map.len() }
 
     /// Returns true if the set contains no elements
@@ -370,7 +362,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// v.insert(1);
     /// assert!(!v.is_empty());
     /// ```
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn is_empty(&self) -> bool { self.len() == 0 }
 
     /// Clears the set, removing all values.
@@ -384,7 +375,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// assert!(v.is_empty());
     /// ```
     #[inline]
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn clear(&mut self) { self.map.clear() }
 
     /// Returns `true` if the set contains a value.
@@ -401,7 +391,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// assert_eq!(set.contains(&4), false);
     /// ```
     #[inline]
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn contains<Q: ?Sized>(&self, value: &Q) -> bool
         where C: Compare<Q, T>
     {
@@ -423,7 +412,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// b.insert(1);
     /// assert_eq!(a.is_disjoint(&b), false);
     /// ```
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn is_disjoint(&self, other: &Set<T, C>) -> bool where C: Eq {
         self.intersection(other).next().is_none()
     }
@@ -442,7 +430,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// set.insert(4);
     /// assert_eq!(set.is_subset(&sup), false);
     /// ```
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn is_subset(&self, other: &Set<T, C>) -> bool where C: Eq {
         assert!(self.comparator() == other.comparator());
         let mut x = self.iter();
@@ -485,7 +472,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// set.insert(2);
     /// assert_eq!(set.is_superset(&sub), true);
     /// ```
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn is_superset(&self, other: &Set<T, C>) -> bool where C: Eq {
         other.is_subset(self)
     }
@@ -503,7 +489,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// assert_eq!(set.len(), 1);
     /// ```
     #[inline]
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn insert(&mut self, value: T) -> bool { self.map.insert(value, ()).is_none() }
 
     /// Removes a value from the set. Returns `true` if the value was
@@ -523,7 +508,6 @@ impl<T, C> Set<T, C> where C: Compare<T> {
     /// assert_eq!(set.remove(&2), false);
     /// ```
     #[inline]
-    #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn remove<Q: ?Sized>(&mut self, value: &Q) -> bool
         where C: Compare<Q, T>
     {
@@ -659,7 +643,6 @@ impl<'a, T, C> Iterator for Union<'a, T, C> where C: Compare<T> {
     }
 }
 
-#[unstable = "matches collection reform specification, waiting for dust to settle"]
 impl<'a, 'b, T, C> ops::BitOr<&'b Set<T, C>> for &'a Set<T, C>
     where T: Clone, C: Compare<T> + Eq + Clone {
 
@@ -685,7 +668,6 @@ impl<'a, 'b, T, C> ops::BitOr<&'b Set<T, C>> for &'a Set<T, C>
     }
 }
 
-#[unstable = "matches collection reform specification, waiting for dust to settle"]
 impl<'a, 'b, T, C> ops::BitAnd<&'b Set<T, C>> for &'a Set<T, C>
     where T: Clone, C: Compare<T> + Eq + Clone {
 
@@ -711,7 +693,6 @@ impl<'a, 'b, T, C> ops::BitAnd<&'b Set<T, C>> for &'a Set<T, C>
     }
 }
 
-#[unstable = "matches collection reform specification, waiting for dust to settle"]
 impl<'a, 'b, T, C> ops::BitXor<&'b Set<T, C>> for &'a Set<T, C>
     where T: Clone, C: Compare<T> + Eq + Clone {
 
@@ -737,7 +718,6 @@ impl<'a, 'b, T, C> ops::BitXor<&'b Set<T, C>> for &'a Set<T, C>
     }
 }
 
-#[unstable = "matches collection reform specification, waiting for dust to settle"]
 impl<'a, 'b, T, C> ops::Sub<&'b Set<T, C>> for &'a Set<T, C>
     where T: Clone, C: Compare<T> + Eq + Clone {
 
