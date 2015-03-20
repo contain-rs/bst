@@ -24,8 +24,8 @@ extern crate compare;
 #[cfg(test)] extern crate test;
 #[cfg(test)] #[macro_use] mod bench;
 
-pub use map::TreeMap;
-pub use set::TreeSet;
+pub use map::Map;
+pub use set::Set;
 
 pub mod map;
 pub mod set;
