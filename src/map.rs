@@ -432,13 +432,7 @@ impl<K, V, C> Map<K, V, C> where C: Compare<K> {
     pub fn get<Q: ?Sized>(&self, key: &Q) -> Option<&V>
         where C: Compare<Q, K>
     {
-        // FIXME: redundant, but a bug in method-level where clauses requires it
-        fn f<'r, K, V, C, Q: ?Sized>(node: &'r Option<Box<TreeNode<K, V>>>, cmp: &C, key: &Q)
-            -> Option<&'r V> where C: Compare<Q, K> {
-            tree_find_with(node, |k| cmp.compare(key, k))
-        }
-
-        f(&self.root, &self.cmp, key)
+        tree_find_with(&self.root, |k| Compare::compare(&self.cmp, key, k))
     }
 
     /// Returns true if the map contains a value for the specified key.
@@ -481,13 +475,8 @@ impl<K, V, C> Map<K, V, C> where C: Compare<K> {
     pub fn get_mut<Q: ?Sized>(&mut self, key: &Q) -> Option<&mut V>
         where C: Compare<Q, K>
     {
-        // FIXME: redundant, but a bug in method-level where clauses requires it
-        fn f<'r, K, V, C, Q: ?Sized>(node: &'r mut Option<Box<TreeNode<K, V>>>, cmp: &C, key: &Q)
-            -> Option<&'r mut V> where C: Compare<Q, K> {
-            tree_find_with_mut(node, |k| cmp.compare(key, k))
-        }
-
-        f(&mut self.root, &self.cmp, key)
+        let cmp = &self.cmp;
+        tree_find_with_mut(&mut self.root, |k| Compare::compare(cmp, key, k))
     }
 
     /// Inserts a key-value pair from the map. If the key already had a value
@@ -594,17 +583,11 @@ macro_rules! bound_setup {
      // whether we are looking for the lower or upper bound.
      $is_lower_bound:expr) => {
         {
-            // FIXME: redundant, but a bug in method-level where clauses requires it
-            fn compare<C, Q: ?Sized, K>(cmp: &C, k: &Q, node_k: &K) -> Ordering
-                where C: Compare<Q, K> {
-                cmp.compare(k, node_k)
-            }
-
             let (mut iter, cmp) = $iter;
             loop {
                 if !iter.node.is_null() {
                     let node_k = unsafe {&(*iter.node).key};
-                    match compare(cmp, $k, node_k) {
+                    match Compare::compare(cmp, $k, node_k) {
                         Less => iter.traverse_left(),
                         Greater => iter.traverse_right(),
                         Equal => {
