@@ -150,7 +150,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     ///
     /// ```
     /// use bst::TreeSet;
-    /// let set: TreeSet<i32> = [1, 4, 3, 5, 2].iter().map(|&x| x).collect();
+    /// let set: TreeSet<i32> = [1, 4, 3, 5, 2].iter().cloned().collect();
     ///
     /// // Will print in ascending order.
     /// for x in set.iter() {
@@ -169,7 +169,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     ///
     /// ```
     /// use bst::TreeSet;
-    /// let set: TreeSet<i32> = [1, 4, 3, 5, 2].iter().map(|&x| x).collect();
+    /// let set: TreeSet<i32> = [1, 4, 3, 5, 2].iter().cloned().collect();
     ///
     /// // Will print in descending order.
     /// for x in set.rev_iter() {
@@ -188,11 +188,11 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     ///
     /// ```
     /// use bst::TreeSet;
-    /// let set: TreeSet<i32> = [1, 4, 3, 5, 2].iter().map(|&x| x).collect();
+    /// let set: TreeSet<i32> = [1, 4, 3, 5, 2].iter().cloned().collect();
     ///
     /// // Not possible with a regular `.iter()`
     /// let v: Vec<i32> = set.into_iter().collect();
-    /// assert_eq!(v, vec![1, 2, 3, 4, 5]);
+    /// assert_eq!(v, [1, 2, 3, 4, 5]);
     /// ```
     #[inline]
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
@@ -210,7 +210,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     ///
     /// ```
     /// use bst::TreeSet;
-    /// let set: TreeSet<i32> = [2, 4, 6, 8].iter().map(|&x| x).collect();
+    /// let set: TreeSet<i32> = [2, 4, 6, 8].iter().cloned().collect();
     ///
     /// assert_eq!(set.lower_bound(&4).next(), Some(&4));
     /// assert_eq!(set.lower_bound(&5).next(), Some(&6));
@@ -229,7 +229,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     ///
     /// ```
     /// use bst::TreeSet;
-    /// let set: TreeSet<i32> = [2, 4, 6, 8].iter().map(|&x| x).collect();
+    /// let set: TreeSet<i32> = [2, 4, 6, 8].iter().cloned().collect();
     ///
     /// assert_eq!(set.upper_bound(&4).next(), Some(&6));
     /// assert_eq!(set.upper_bound(&5).next(), Some(&6));
@@ -247,21 +247,21 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
-    /// let b: TreeSet<i32> = [3, 4, 5].iter().map(|&x| x).collect();
+    /// let a: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
+    /// let b: TreeSet<i32> = [3, 4, 5].iter().cloned().collect();
     ///
     /// // Can be seen as `a - b`.
     /// for x in a.difference(&b) {
     ///     println!("{}", x); // Print 1 then 2
     /// }
     ///
-    /// let diff: TreeSet<i32> = a.difference(&b).map(|&x| x).collect();
-    /// assert_eq!(diff, [1, 2].iter().map(|&x| x).collect());
+    /// let diff: TreeSet<i32> = a.difference(&b).cloned().collect();
+    /// assert_eq!(diff, [1, 2].iter().cloned().collect());
     ///
     /// // Note that difference is not symmetric,
     /// // and `b - a` means something else:
-    /// let diff: TreeSet<i32> = b.difference(&a).map(|&x| x).collect();
-    /// assert_eq!(diff, [4, 5].iter().map(|&x| x).collect());
+    /// let diff: TreeSet<i32> = b.difference(&a).cloned().collect();
+    /// assert_eq!(diff, [4, 5].iter().cloned().collect());
     /// ```
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn difference<'a>(&'a self, other: &'a TreeSet<T, C>)
@@ -281,19 +281,19 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
-    /// let b: TreeSet<i32> = [3, 4, 5].iter().map(|&x| x).collect();
+    /// let a: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
+    /// let b: TreeSet<i32> = [3, 4, 5].iter().cloned().collect();
     ///
     /// // Print 1, 2, 4, 5 in ascending order.
     /// for x in a.symmetric_difference(&b) {
     ///     println!("{}", x);
     /// }
     ///
-    /// let diff1: TreeSet<i32> = a.symmetric_difference(&b).map(|&x| x).collect();
-    /// let diff2: TreeSet<i32> = b.symmetric_difference(&a).map(|&x| x).collect();
+    /// let diff1: TreeSet<i32> = a.symmetric_difference(&b).cloned().collect();
+    /// let diff2: TreeSet<i32> = b.symmetric_difference(&a).cloned().collect();
     ///
     /// assert_eq!(diff1, diff2);
-    /// assert_eq!(diff1, [1, 2, 4, 5].iter().map(|&x| x).collect());
+    /// assert_eq!(diff1, [1, 2, 4, 5].iter().cloned().collect());
     /// ```
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn symmetric_difference<'a>(&'a self, other: &'a TreeSet<T, C>)
@@ -313,16 +313,16 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
-    /// let b: TreeSet<i32> = [2, 3, 4].iter().map(|&x| x).collect();
+    /// let a: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
+    /// let b: TreeSet<i32> = [2, 3, 4].iter().cloned().collect();
     ///
     /// // Print 2, 3 in ascending order.
     /// for x in a.intersection(&b) {
     ///     println!("{}", x);
     /// }
     ///
-    /// let diff: TreeSet<i32> = a.intersection(&b).map(|&x| x).collect();
-    /// assert_eq!(diff, [2, 3].iter().map(|&x| x).collect());
+    /// let diff: TreeSet<i32> = a.intersection(&b).cloned().collect();
+    /// assert_eq!(diff, [2, 3].iter().cloned().collect());
     /// ```
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn intersection<'a>(&'a self, other: &'a TreeSet<T, C>)
@@ -342,16 +342,16 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
-    /// let b: TreeSet<i32> = [3, 4, 5].iter().map(|&x| x).collect();
+    /// let a: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
+    /// let b: TreeSet<i32> = [3, 4, 5].iter().cloned().collect();
     ///
     /// // Print 1, 2, 3, 4, 5 in ascending order.
     /// for x in a.union(&b) {
     ///     println!("{}", x);
     /// }
     ///
-    /// let diff: TreeSet<i32> = a.union(&b).map(|&x| x).collect();
-    /// assert_eq!(diff, [1, 2, 3, 4, 5].iter().map(|&x| x).collect());
+    /// let diff: TreeSet<i32> = a.union(&b).cloned().collect();
+    /// assert_eq!(diff, [1, 2, 3, 4, 5].iter().cloned().collect());
     /// ```
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn union<'a>(&'a self, other: &'a TreeSet<T, C>) -> Union<'a, T, C>
@@ -422,7 +422,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let set: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
+    /// let set: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
     /// assert_eq!(set.contains(&1), true);
     /// assert_eq!(set.contains(&4), false);
     /// ```
@@ -442,7 +442,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
+    /// let a: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
     /// let mut b: TreeSet<i32> = TreeSet::new();
     ///
     /// assert_eq!(a.is_disjoint(&b), true);
@@ -463,7 +463,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let sup: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
+    /// let sup: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
     /// let mut set: TreeSet<i32> = TreeSet::new();
     ///
     /// assert_eq!(set.is_subset(&sup), true);
@@ -505,7 +505,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let sub: TreeSet<i32> = [1, 2].iter().map(|&x| x).collect();
+    /// let sub: TreeSet<i32> = [1, 2].iter().cloned().collect();
     /// let mut set: TreeSet<i32> = TreeSet::new();
     ///
     /// assert_eq!(set.is_superset(&sub), false);
@@ -708,12 +708,12 @@ impl<'a, 'b, T, C> ops::BitOr<&'b TreeSet<T, C>> for &'a TreeSet<T, C>
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let a: TreeSet<i32> = vec![1, 2, 3].into_iter().collect();
-    /// let b: TreeSet<i32> = vec![3, 4, 5].into_iter().collect();
+    /// let a: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
+    /// let b: TreeSet<i32> = [3, 4, 5].iter().cloned().collect();
     ///
     /// let set: TreeSet<i32> = &a | &b;
     /// let v: Vec<i32> = set.into_iter().collect();
-    /// assert_eq!(v, vec![1, 2, 3, 4, 5]);
+    /// assert_eq!(v, [1, 2, 3, 4, 5]);
     /// ```
     fn bitor(self, rhs: &TreeSet<T, C>) -> TreeSet<T, C> {
         let it = self.union(rhs).cloned();
@@ -736,12 +736,12 @@ impl<'a, 'b, T, C> ops::BitAnd<&'b TreeSet<T, C>> for &'a TreeSet<T, C>
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let a: TreeSet<i32> = vec![1, 2, 3].into_iter().collect();
-    /// let b: TreeSet<i32> = vec![2, 3, 4].into_iter().collect();
+    /// let a: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
+    /// let b: TreeSet<i32> = [2, 3, 4].iter().cloned().collect();
     ///
     /// let set: TreeSet<i32> = &a & &b;
     /// let v: Vec<i32> = set.into_iter().collect();
-    /// assert_eq!(v, vec![2, 3]);
+    /// assert_eq!(v, [2, 3]);
     /// ```
     fn bitand(self, rhs: &TreeSet<T, C>) -> TreeSet<T, C> {
         let it = self.intersection(rhs).cloned();
@@ -764,12 +764,12 @@ impl<'a, 'b, T, C> ops::BitXor<&'b TreeSet<T, C>> for &'a TreeSet<T, C>
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let a: TreeSet<i32> = vec![1, 2, 3].into_iter().collect();
-    /// let b: TreeSet<i32> = vec![3, 4, 5].into_iter().collect();
+    /// let a: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
+    /// let b: TreeSet<i32> = [3, 4, 5].iter().cloned().collect();
     ///
     /// let set: TreeSet<i32> = &a ^ &b;
     /// let v: Vec<i32> = set.into_iter().collect();
-    /// assert_eq!(v, vec![1, 2, 4, 5]);
+    /// assert_eq!(v, [1, 2, 4, 5]);
     /// ```
     fn bitxor(self, rhs: &TreeSet<T, C>) -> TreeSet<T, C> {
         let it = self.symmetric_difference(rhs).cloned();
@@ -792,12 +792,12 @@ impl<'a, 'b, T, C> ops::Sub<&'b TreeSet<T, C>> for &'a TreeSet<T, C>
     /// ```
     /// use bst::TreeSet;
     ///
-    /// let a: TreeSet<i32> = vec![1, 2, 3].into_iter().collect();
-    /// let b: TreeSet<i32> = vec![3, 4, 5].into_iter().collect();
+    /// let a: TreeSet<i32> = [1, 2, 3].iter().cloned().collect();
+    /// let b: TreeSet<i32> = [3, 4, 5].iter().cloned().collect();
     ///
     /// let set: TreeSet<i32> = &a - &b;
     /// let v: Vec<i32> = set.into_iter().collect();
-    /// assert_eq!(v, vec![1, 2]);
+    /// assert_eq!(v, [1, 2]);
     /// ```
     fn sub(self, rhs: &TreeSet<T, C>) -> TreeSet<T, C> {
         let it = self.difference(rhs).cloned();
@@ -966,7 +966,7 @@ mod test {
 
     #[test]
     fn test_move_iter_size_hint() {
-        let s: TreeSet<i32> = vec!(0, 1).into_iter().collect();
+        let s: TreeSet<i32> = vec![0, 1].into_iter().collect();
 
         let mut it = s.into_iter();
 
@@ -1105,7 +1105,7 @@ mod test {
 
         let set: TreeSet<i32> = &a | &b;
         let v: Vec<i32> = set.into_iter().collect();
-        assert_eq!(v, vec![-2, 1, 3, 5, 9, 11, 13, 16, 19, 24]);
+        assert_eq!(v, [-2, 1, 3, 5, 9, 11, 13, 16, 19, 24]);
     }
 
     #[test]
@@ -1115,7 +1115,7 @@ mod test {
 
         let set: TreeSet<i32> = &a & &b;
         let v: Vec<i32> = set.into_iter().collect();
-        assert_eq!(v, vec![3, 5, 11, 77]);
+        assert_eq!(v, [3, 5, 11, 77]);
     }
 
     #[test]
@@ -1125,7 +1125,7 @@ mod test {
 
         let set: TreeSet<i32> = &a ^ &b;
         let v: Vec<i32> = set.into_iter().collect();
-        assert_eq!(v, vec![-2, 1, 5, 11, 14, 22]);
+        assert_eq!(v, [-2, 1, 5, 11, 14, 22]);
     }
 
     #[test]
@@ -1135,7 +1135,7 @@ mod test {
 
         let set: TreeSet<i32> = &a - &b;
         let v: Vec<i32> = set.into_iter().collect();
-        assert_eq!(v, vec![11, 22, 33, 40, 42]);
+        assert_eq!(v, [11, 22, 33, 40, 42]);
     }
 
     #[test]
@@ -1162,7 +1162,7 @@ mod test {
     fn test_from_iter() {
         let xs = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-        let set: TreeSet<i32> = xs.iter().map(|&x| x).collect();
+        let set: TreeSet<i32> = xs.iter().cloned().collect();
 
         for x in xs.iter() {
             assert!(set.contains(x));

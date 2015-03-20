@@ -376,7 +376,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     ///
     /// // Not possible with a regular `.iter()`
     /// let vec: Vec<(&str, i32)> = map.into_iter().collect();
-    /// assert_eq!(vec, vec![("a", 1), ("b", 2), ("c", 3)]);
+    /// assert_eq!(vec, [("a", 1), ("b", 2), ("c", 3)]);
     /// ```
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn into_iter(self) -> IntoIter<K, V> {
@@ -1690,7 +1690,7 @@ mod test_treemap {
     fn test_keys() {
         let vec = vec![(1, 'a'), (2, 'b'), (3, 'c')];
         let map: TreeMap<i32, char> = vec.into_iter().collect();
-        let keys: Vec<i32> = map.keys().map(|&k| k).collect();
+        let keys: Vec<i32> = map.keys().cloned().collect();
         assert_eq!(keys.len(), 3);
         assert!(keys.contains(&1));
         assert!(keys.contains(&2));
@@ -1701,7 +1701,7 @@ mod test_treemap {
     fn test_values() {
         let vec = vec![(1, 'a'), (2, 'b'), (3, 'c')];
         let map = vec.into_iter().collect::<TreeMap<i32, char>>();
-        let values = map.values().map(|&v| v).collect::<Vec<char>>();
+        let values = map.values().cloned().collect::<Vec<char>>();
         assert_eq!(values.len(), 3);
         assert!(values.contains(&'a'));
         assert!(values.contains(&'b'));
@@ -1821,7 +1821,7 @@ mod test_treemap {
     fn test_from_iter() {
         let xs = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6)];
 
-        let map: TreeMap<i32, i32> = xs.iter().map(|&x| x).collect();
+        let map: TreeMap<i32, i32> = xs.iter().cloned().collect();
 
         for &(k, v) in xs.iter() {
             assert_eq!(map.get(&k), Some(&v));
