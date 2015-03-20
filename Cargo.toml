@@ -1,0 +1,33 @@
+[package]
+
+name = "bst"
+version = "0.0.1"
+license = "MIT/Apache-2.0"
+description = "An ordered map and set based on a binary search tree."
+
+authors = [
+    "Alexis Beingessner <a.beingessner@gmail.com>",
+    "Andrew Paseltiner <apaseltiner@gmail.com>",
+]
+
+repository = "https://github.com/contain-rs/bst"
+homepage = "https://github.com/contain-rs/bst"
+documentation = "https://contain-rs.github.io/bst/bst"
+keywords = ["data-structures"]
+readme = "README.md"
+
+[features]
+
+default = ["ordered_iter"]
+
+[dependencies]
+
+compare = "*"
+
+[dependencies.ordered_iter]
+
+optional = true
+
+[dev-dependencies]
+
+rand = "*"

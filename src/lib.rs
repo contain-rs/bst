@@ -1,4 +1,4 @@
-// Copyright 2014 The Rust Project Developers. See the COPYRIGHT
+// Copyright 2015 The Rust Project Developers. See the COPYRIGHT
 // file at the top-level directory of this distribution and at
 // http://rust-lang.org/COPYRIGHT.
 //
@@ -18,7 +18,7 @@
 //! # Examples
 //!
 //! ```{rust}
-//! use collect::TreeSet;
+//! use bst::TreeSet;
 //!
 //! let mut tree_set = TreeSet::new();
 //!
@@ -30,6 +30,23 @@
 //!    println!("{}", i) // prints 1, then 2, then 3
 //! }
 //! ```
+
+#![feature(box_patterns, box_syntax)]
+#![feature(core)]
+#![feature(unboxed_closures)]
+
+#![cfg_attr(test, feature(hash, test))]
+
+extern crate compare;
+
+#[cfg(feature = "ordered_iter")] extern crate ordered_iter;
+
+#[cfg(test)] extern crate rand;
+#[cfg(test)] extern crate test;
+#[cfg(test)] #[macro_use] mod bench;
+
+pub use map::TreeMap;
+pub use set::TreeSet;
 
 pub mod map;
 pub mod set;

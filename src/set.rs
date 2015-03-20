@@ -1,4 +1,4 @@
-// Copyright 2014 The Rust Project Developers. See the COPYRIGHT
+// Copyright 2015 The Rust Project Developers. See the COPYRIGHT
 // file at the top-level directory of this distribution and at
 // http://rust-lang.org/COPYRIGHT.
 //
@@ -16,7 +16,7 @@ use std::hash::{Hash, Hasher};
 use std::ops;
 
 use compare::{Compare, Natural, natural};
-use tree_map::{self, TreeMap};
+use super::map::{self, TreeMap};
 
 // FIXME(conventions): implement bounded iterators
 // FIXME(conventions): replace rev_iter(_mut) by making iter(_mut) DoubleEnded
@@ -26,7 +26,7 @@ use tree_map::{self, TreeMap};
 /// # Examples
 ///
 /// ```{rust}
-/// use collect::TreeSet;
+/// use bst::TreeSet;
 ///
 /// let mut set = TreeSet::new();
 ///
@@ -48,7 +48,7 @@ use tree_map::{self, TreeMap};
 /// A `TreeSet` can also be used with a custom ordering:
 ///
 /// ```rust
-/// use collect::TreeSet;
+/// use bst::TreeSet;
 ///
 /// struct Troll<'a> {
 ///     name: &'a str,
@@ -127,7 +127,7 @@ impl<T: Ord> TreeSet<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     /// let mut set: TreeSet<i32> = TreeSet::new();
     /// ```
     #[inline]
@@ -149,7 +149,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     /// let set: TreeSet<i32> = [1, 4, 3, 5, 2].iter().map(|&x| x).collect();
     ///
     /// // Will print in ascending order.
@@ -168,7 +168,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     /// let set: TreeSet<i32> = [1, 4, 3, 5, 2].iter().map(|&x| x).collect();
     ///
     /// // Will print in descending order.
@@ -187,7 +187,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     /// let set: TreeSet<i32> = [1, 4, 3, 5, 2].iter().map(|&x| x).collect();
     ///
     /// // Not possible with a regular `.iter()`
@@ -209,7 +209,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     /// let set: TreeSet<i32> = [2, 4, 6, 8].iter().map(|&x| x).collect();
     ///
     /// assert_eq!(set.lower_bound(&4).next(), Some(&4));
@@ -228,7 +228,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     /// let set: TreeSet<i32> = [2, 4, 6, 8].iter().map(|&x| x).collect();
     ///
     /// assert_eq!(set.upper_bound(&4).next(), Some(&6));
@@ -245,7 +245,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
     /// let b: TreeSet<i32> = [3, 4, 5].iter().map(|&x| x).collect();
@@ -279,7 +279,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
     /// let b: TreeSet<i32> = [3, 4, 5].iter().map(|&x| x).collect();
@@ -311,7 +311,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
     /// let b: TreeSet<i32> = [2, 3, 4].iter().map(|&x| x).collect();
@@ -340,7 +340,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
     /// let b: TreeSet<i32> = [3, 4, 5].iter().map(|&x| x).collect();
@@ -369,7 +369,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let mut v = TreeSet::new();
     /// assert_eq!(v.len(), 0);
@@ -385,7 +385,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let mut v = TreeSet::new();
     /// assert!(v.is_empty());
@@ -400,7 +400,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let mut v = TreeSet::new();
     /// v.insert(1);
@@ -420,7 +420,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let set: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
     /// assert_eq!(set.contains(&1), true);
@@ -440,7 +440,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let a: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
     /// let mut b: TreeSet<i32> = TreeSet::new();
@@ -461,7 +461,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let sup: TreeSet<i32> = [1, 2, 3].iter().map(|&x| x).collect();
     /// let mut set: TreeSet<i32> = TreeSet::new();
@@ -503,7 +503,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let sub: TreeSet<i32> = [1, 2].iter().map(|&x| x).collect();
     /// let mut set: TreeSet<i32> = TreeSet::new();
@@ -528,7 +528,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let mut set = TreeSet::new();
     ///
@@ -550,7 +550,7 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let mut set = TreeSet::new();
     ///
@@ -569,16 +569,16 @@ impl<T, C> TreeSet<T, C> where C: Compare<T> {
 
 /// A lazy forward iterator over a set.
 pub struct Iter<'a, T:'a> {
-    iter: tree_map::Iter<'a, T, ()>
+    iter: map::Iter<'a, T, ()>
 }
 
 /// A lazy backward iterator over a set.
 pub struct RevIter<'a, T:'a> {
-    iter: tree_map::RevIter<'a, T, ()>
+    iter: map::RevIter<'a, T, ()>
 }
 
 /// A lazy forward iterator over a set that consumes the set while iterating.
-pub struct IntoIter<T>(iter::Map<tree_map::IntoIter<T, ()>, fn((T, ())) -> T>);
+pub struct IntoIter<T>(iter::Map<map::IntoIter<T, ()>, fn((T, ())) -> T>);
 
 /// A lazy iterator producing elements in the set difference (in-order).
 pub struct Difference<'a, T:'a, C:'a> {
@@ -706,7 +706,7 @@ impl<'a, 'b, T, C> ops::BitOr<&'b TreeSet<T, C>> for &'a TreeSet<T, C>
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let a: TreeSet<i32> = vec![1, 2, 3].into_iter().collect();
     /// let b: TreeSet<i32> = vec![3, 4, 5].into_iter().collect();
@@ -734,7 +734,7 @@ impl<'a, 'b, T, C> ops::BitAnd<&'b TreeSet<T, C>> for &'a TreeSet<T, C>
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let a: TreeSet<i32> = vec![1, 2, 3].into_iter().collect();
     /// let b: TreeSet<i32> = vec![2, 3, 4].into_iter().collect();
@@ -762,7 +762,7 @@ impl<'a, 'b, T, C> ops::BitXor<&'b TreeSet<T, C>> for &'a TreeSet<T, C>
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let a: TreeSet<i32> = vec![1, 2, 3].into_iter().collect();
     /// let b: TreeSet<i32> = vec![3, 4, 5].into_iter().collect();
@@ -790,7 +790,7 @@ impl<'a, 'b, T, C> ops::Sub<&'b TreeSet<T, C>> for &'a TreeSet<T, C>
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeSet;
+    /// use bst::TreeSet;
     ///
     /// let a: TreeSet<i32> = vec![1, 2, 3].into_iter().collect();
     /// let b: TreeSet<i32> = vec![3, 4, 5].into_iter().collect();

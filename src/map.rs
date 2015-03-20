@@ -1,4 +1,4 @@
-// Copyright 2013 The Rust Project Developers. See the COPYRIGHT
+// Copyright 2015 The Rust Project Developers. See the COPYRIGHT
 // file at the top-level directory of this distribution and at
 // http://rust-lang.org/COPYRIGHT.
 //
@@ -30,7 +30,7 @@ use compare::{Compare, Natural, natural};
 /// # Examples
 ///
 /// ```rust
-/// use collect::TreeMap;
+/// use bst::TreeMap;
 ///
 /// let mut map = TreeMap::new();
 ///
@@ -74,7 +74,7 @@ use compare::{Compare, Natural, natural};
 /// A `TreeMap` can also be used with a custom ordering:
 ///
 /// ```rust
-/// use collect::TreeMap;
+/// use bst::TreeMap;
 ///
 /// struct Troll<'a> {
 ///     name: &'a str,
@@ -194,7 +194,7 @@ impl<K: Ord, V> TreeMap<K, V> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     /// let mut map: TreeMap<&str, i32> = TreeMap::new();
     /// ```
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
@@ -215,7 +215,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     /// let mut map = TreeMap::new();
     /// map.insert("a", 1);
     /// map.insert("c", 3);
@@ -240,7 +240,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     /// let mut map = TreeMap::new();
     /// map.insert("a", 1);
     /// map.insert("c", 3);
@@ -264,7 +264,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     /// let mut map = TreeMap::new();
     /// map.insert("a", 1);
     /// map.insert("c", 3);
@@ -290,7 +290,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     /// let mut map = TreeMap::new();
     /// map.insert("a", 1);
     /// map.insert("c", 3);
@@ -311,7 +311,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     /// let mut map = TreeMap::new();
     /// map.insert("a", 1);
     /// map.insert("c", 3);
@@ -343,7 +343,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     /// let mut map = TreeMap::new();
     /// map.insert("a", 1);
     /// map.insert("c", 3);
@@ -368,7 +368,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     /// let mut map = TreeMap::new();
     /// map.insert("a", 1);
     /// map.insert("c", 3);
@@ -396,7 +396,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut a = TreeMap::new();
     /// assert_eq!(a.len(), 0);
@@ -411,7 +411,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut a = TreeMap::new();
     /// assert!(a.is_empty());
@@ -427,7 +427,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut a = TreeMap::new();
     /// a.insert(1, "a");
@@ -448,7 +448,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut map = TreeMap::new();
     /// map.insert(1, "a");
@@ -477,7 +477,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut map = TreeMap::new();
     /// map.insert(1, "a");
@@ -500,7 +500,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut map = TreeMap::new();
     /// map.insert(1, "a");
@@ -530,7 +530,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut map = TreeMap::new();
     /// assert_eq!(map.insert(37, "a"), None);
@@ -556,7 +556,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut map = TreeMap::new();
     /// map.insert(1, "a");
@@ -579,7 +579,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::tree_map::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// fn get_headers() -> TreeMap<&'static str, &'static str> {
     ///     let mut result = TreeMap::new();
@@ -608,7 +608,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// let mut t = collect::tree_map::TreeMap::new();
+    /// let mut t = bst::TreeMap::new();
     /// t.insert("Content-Type", "application/xml");
     /// t.insert("User-Agent", "Curl-Rust/0.1");
     ///
@@ -686,7 +686,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut map = TreeMap::new();
     /// map.insert(2, "a");
@@ -708,7 +708,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut map = TreeMap::new();
     /// map.insert(2, "a");
@@ -744,7 +744,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut map = TreeMap::new();
     /// map.insert(2, "a");
@@ -778,7 +778,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     /// # Examples
     ///
     /// ```rust
-    /// use collect::TreeMap;
+    /// use bst::TreeMap;
     ///
     /// let mut map = TreeMap::new();
     /// map.insert(2, "a");
