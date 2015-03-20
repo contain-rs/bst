@@ -22,6 +22,8 @@ use compare::{Compare, Natural, natural};
 // FIXME(conventions): implement bounded iterators
 // FIXME(conventions): replace rev_iter(_mut) by making iter(_mut) DoubleEnded
 
+/// An ordered map based on a binary search tree.
+///
 /// This is implemented as an AA tree, which is a simplified variation of
 /// a red-black tree where red (horizontal) nodes can only be added
 /// as a right child. The time complexity is the same, and re-balancing

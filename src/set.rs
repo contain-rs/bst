@@ -21,11 +21,11 @@ use super::map::{self, TreeMap};
 // FIXME(conventions): implement bounded iterators
 // FIXME(conventions): replace rev_iter(_mut) by making iter(_mut) DoubleEnded
 
-/// An implementation of a set on top of the `TreeMap` container.
+/// An ordered set based on a binary search tree.
 ///
 /// # Examples
 ///
-/// ```{rust}
+/// ```
 /// use bst::TreeSet;
 ///
 /// let mut set = TreeSet::new();
