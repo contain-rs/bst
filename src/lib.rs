@@ -8,28 +8,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-//! Maps are collections of unique keys with corresponding values, and sets are
-//! just unique keys without a corresponding value.
-//!
-//! This crate defines the `TreeMap` and `TreeSet` types. Their keys must implement `Ord`.
-//!
-//! `TreeMap`s are ordered.
-//!
-//! # Examples
-//!
-//! ```{rust}
-//! use bst::TreeSet;
-//!
-//! let mut tree_set = TreeSet::new();
-//!
-//! tree_set.insert(2);
-//! tree_set.insert(1);
-//! tree_set.insert(3);
-//!
-//! for i in tree_set.iter() {
-//!    println!("{}", i) // prints 1, then 2, then 3
-//! }
-//! ```
+//! An ordered map and set based on a binary search tree.
 
 #![feature(box_patterns, box_syntax)]
 #![feature(core)]
@@ -45,8 +24,8 @@ extern crate compare;
 #[cfg(test)] extern crate test;
 #[cfg(test)] #[macro_use] mod bench;
 
-pub use map::TreeMap;
-pub use set::TreeSet;
+pub use map::Map;
+pub use set::Set;
 
 pub mod map;
 pub mod set;
