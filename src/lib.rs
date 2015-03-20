@@ -17,7 +17,7 @@
 //!
 //! # Examples
 //!
-//! ```{rust}
+//! ```
 //! use bst::TreeSet;
 //!
 //! let mut tree_set = TreeSet::new();
