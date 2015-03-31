@@ -60,7 +60,7 @@ use compare::{Compare, Natural, natural};
 ///     println!("1 is no more");
 /// }
 ///
-/// for key in range(0, 4) {
+/// for key in 0..4 {
 ///     match map.get(&key) {
 ///         Some(value) => println!("{} has a value: {}", key, value),
 ///         None => println!("{} not in map", key),
@@ -173,17 +173,17 @@ impl<K, V, C> Default for TreeMap<K, V, C> where C: Compare<K> + Default {
     fn default() -> TreeMap<K, V, C> { TreeMap::with_comparator(Default::default()) }
 }
 
-impl<K, V, C, Q: ?Sized> ops::Index<Q> for TreeMap<K, V, C> where C: Compare<K> + Compare<Q, K> {
+impl<'a, K, V, C, Q: ?Sized> ops::Index<&'a Q> for TreeMap<K, V, C> where C: Compare<K> + Compare<Q, K> {
     type Output = V;
     #[inline]
-    fn index(&self, i: &Q) -> &V {
+    fn index(&self, i: &'a Q) -> &V {
         self.get(i).expect("no entry found for key")
     }
 }
 
-impl<K, V, C, Q: ?Sized> ops::IndexMut<Q> for TreeMap<K, V, C> where C: Compare<K> + Compare<Q, K> {
+impl<'a, K, V, C, Q: ?Sized> ops::IndexMut<&'a Q> for TreeMap<K, V, C> where C: Compare<K> + Compare<Q, K> {
     #[inline]
-    fn index_mut(&mut self, i: &Q) -> &mut V {
+    fn index_mut(&mut self, i: &'a Q) -> &mut V {
         self.get_mut(i).expect("no entry found for key")
     }
 }
@@ -508,7 +508,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     ///     Some(x) => *x = "b",
     ///     None => (),
     /// }
-    /// assert_eq!(map[1], "b");
+    /// assert_eq!(map[&1], "b");
     /// ```
     #[inline]
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
@@ -538,7 +538,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     ///
     /// map.insert(37, "b");
     /// assert_eq!(map.insert(37, "c"), Some("b"));
-    /// assert_eq!(map[37], "c");
+    /// assert_eq!(map[&37], "c");
     /// ```
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn insert(&mut self, key: K, value: V) -> Option<V> {
@@ -1004,8 +1004,7 @@ define_iterator! {
 fn deref<K, V>(node: &Option<Box<TreeNode<K, V>>>) -> *const TreeNode<K, V> {
     match *node {
         Some(ref n) => {
-            let n: &TreeNode<K, V> = &**n;
-            n as *const TreeNode<K, V>
+            &**n
         }
         None => ptr::null()
     }
@@ -1015,8 +1014,7 @@ fn deref_mut<K, V>(x: &mut Option<Box<TreeNode<K, V>>>)
              -> *mut TreeNode<K, V> {
     match *x {
         Some(ref mut n) => {
-            let n: &mut TreeNode<K, V> = &mut **n;
-            n as *mut TreeNode<K, V>
+            &mut **n
         }
         None => ptr::null_mut()
     }
@@ -1515,30 +1513,30 @@ mod test_treemap {
         let mut map: TreeMap<i32,i32> = TreeMap::new();
         let mut ctrl = vec![];
 
-        check_equal(ctrl.as_slice(), &map);
+        check_equal(&ctrl, &map);
         assert!(map.get(&5).is_none());
 
         let seed: &[_] = &[42];
         let mut rng: rand::IsaacRng = rand::SeedableRng::from_seed(seed);
 
-        for _ in range(0, 3) {
-            for _ in range(0, 90) {
+        for _ in 0..3 {
+            for _ in 0..90 {
                 let k = rng.gen();
                 let v = rng.gen();
                 if !ctrl.iter().any(|x| x == &(k, v)) {
                     assert!(map.insert(k, v).is_none());
                     ctrl.push((k, v));
                     check_structure(&map);
-                    check_equal(ctrl.as_slice(), &map);
+                    check_equal(&ctrl, &map);
                 }
             }
 
-            for _ in range(0, 30) {
+            for _ in 0..30 {
                 let r = rng.gen_range(0, ctrl.len());
                 let (key, _) = ctrl.remove(r);
                 assert!(map.remove(&key).is_some());
                 check_structure(&map);
-                check_equal(ctrl.as_slice(), &map);
+                check_equal(&ctrl, &map);
             }
         }
     }
@@ -1584,11 +1582,11 @@ mod test_treemap {
     #[test]
     fn test_interval_iteration() {
         let mut m = TreeMap::new();
-        for i in range(1, 100) {
+        for i in 1..100 {
             assert!(m.insert(i * 2, i * 4).is_none());
         }
 
-        for i in range(1, 198) {
+        for i in 1..198 {
             let mut lb_it = m.lower_bound(&i);
             let (&k, &v) = lb_it.next().unwrap();
             let lb = i + i % 2;
@@ -1626,7 +1624,7 @@ mod test_treemap {
     #[test]
     fn test_mut_iter() {
         let mut m = TreeMap::new();
-        for i in range(0, 10) {
+        for i in 0..10 {
             assert!(m.insert(i, 100 * i).is_none());
         }
 
@@ -1641,7 +1639,7 @@ mod test_treemap {
     #[test]
     fn test_mut_rev_iter() {
         let mut m = TreeMap::new();
-        for i in range(0, 10) {
+        for i in 0..10 {
             assert!(m.insert(i, 100 * i).is_none());
         }
 
@@ -1658,19 +1656,19 @@ mod test_treemap {
     fn test_mut_interval_iter() {
         let mut m_lower = TreeMap::new();
         let mut m_upper = TreeMap::new();
-        for i in range(1, 100) {
+        for i in 1..100 {
             assert!(m_lower.insert(i * 2, i * 4).is_none());
             assert!(m_upper.insert(i * 2, i * 4).is_none());
         }
 
-        for i in range(1, 199) {
+        for i in 1..199 {
             let mut lb_it = m_lower.lower_bound_mut(&i);
             let (&k, v) = lb_it.next().unwrap();
             let lb = i + i % 2;
             assert_eq!(lb, k);
             *v -= k;
         }
-        for i in range(0, 198) {
+        for i in 0..198 {
             let mut ub_it = m_upper.upper_bound_mut(&i);
             let (&k, v) = ub_it.next().unwrap();
             let ub = i + 2 - i % 2;
@@ -1836,7 +1834,7 @@ mod test_treemap {
         map.insert(2, 1);
         map.insert(3, 4);
 
-        assert_eq!(map[2], 1);
+        assert_eq!(map[&2], 1);
     }
 
     #[test]
@@ -1848,7 +1846,7 @@ mod test_treemap {
         map.insert(2, 1);
         map.insert(3, 4);
 
-        map[4];
+        map[&4];
     }
 
     #[test]
@@ -1907,9 +1905,9 @@ mod test_treemap {
         m["a"] = 2;
 
         assert_eq!(m["a"], 2);
-        assert_eq!(m["a".to_string()], 2);
+        assert_eq!(m[&"a".to_string()], 2);
 
-        m["a".to_string()] = 3;
+        m[&"a".to_string()] = 3;
 
         assert_eq!(m.remove("a"), Some(3));
         assert!(m.remove(&"a").is_none());
@@ -1940,7 +1938,7 @@ mod bench {
         let mut map = TreeMap::<u32, u32>::new();
         let mut rng = weak_rng();
 
-        for _ in range(0, size) {
+        for _ in 0..size {
             map.insert(rng.gen(), rng.gen());
         }
 
