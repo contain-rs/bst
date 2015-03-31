@@ -508,7 +508,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     ///     Some(x) => *x = "b",
     ///     None => (),
     /// }
-    /// assert_eq!(map[1], "b");
+    /// assert_eq!(map[&1], "b");
     /// ```
     #[inline]
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
@@ -538,7 +538,7 @@ impl<K, V, C> TreeMap<K, V, C> where C: Compare<K> {
     ///
     /// map.insert(37, "b");
     /// assert_eq!(map.insert(37, "c"), Some("b"));
-    /// assert_eq!(map[37], "c");
+    /// assert_eq!(map[&37], "c");
     /// ```
     #[unstable = "matches collection reform specification, waiting for dust to settle"]
     pub fn insert(&mut self, key: K, value: V) -> Option<V> {
@@ -1834,7 +1834,7 @@ mod test_treemap {
         map.insert(2, 1);
         map.insert(3, 4);
 
-        assert_eq!(map[2], 1);
+        assert_eq!(map[&2], 1);
     }
 
     #[test]
@@ -1846,7 +1846,7 @@ mod test_treemap {
         map.insert(2, 1);
         map.insert(3, 4);
 
-        map[4];
+        map[&4];
     }
 
     #[test]
@@ -1905,9 +1905,9 @@ mod test_treemap {
         m["a"] = 2;
 
         assert_eq!(m["a"], 2);
-        assert_eq!(m["a".to_string()], 2);
+        assert_eq!(m[&"a".to_string()], 2);
 
-        m["a".to_string()] = 3;
+        m[&"a".to_string()] = 3;
 
         assert_eq!(m.remove("a"), Some(3));
         assert!(m.remove(&"a").is_none());
