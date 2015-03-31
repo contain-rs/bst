@@ -955,7 +955,7 @@ mod test {
 
     #[test]
     fn test_move_iter() {
-        let s: TreeSet<i32> = range(0, 5).collect();
+        let s: TreeSet<i32> = (0..5).collect();
 
         let mut n = 0;
         for x in s.into_iter() {
@@ -1012,8 +1012,16 @@ mod test {
     }
 
     impl<'a, 'b, 'c> FnMut<(&'c i32,)> for Counter<'a, 'b> {
-        type Output = bool;
         extern "rust-call" fn call_mut(&mut self, (&x,): (&'c i32,)) -> bool {
+            assert_eq!(x, self.expected[*self.i]);
+            *self.i += 1;
+            true
+        }
+    }
+
+    impl<'a, 'b, 'c> FnOnce<(&'c i32,)> for Counter<'a, 'b> {
+        type Output = bool;
+        extern "rust-call" fn call_once(self, (&x,): (&'c i32,)) -> bool {
             assert_eq!(x, self.expected[*self.i]);
             *self.i += 1;
             true
